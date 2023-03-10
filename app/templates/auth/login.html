@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+  <h1>Log In</h1>
+  <hr />
+
+  <div class="container ms-0 ps-0">
+    <div class="col w-50">
+      <form method="post">
+        {{ form.csrf_token }}
+
+        {% for field in form %}
+          {% if field.name != "csrf_token" and field.name != "submit" and field.name != "remember_me" %}
+            <div class="mb-3">
+              {{ field.label(class="form-label") }}
+              {{ field(class="form-control" + (" is-invalid" if field.errors else "")) }}
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        <div class="mb-3">
+          {{ form.remember_me(class="form-check-input", id="remember_me") }}
+          {{ form.remember_me.label(class="form-check-label", for="remember_me") }}
+        </div>
+
+        <div class="mb-3 pt-3">
+          {{ form.submit(class="btn btn-primary") }}
+        </div>
+      </form>
+
+      <p>New User? <a href="{{ url_for('auth.register') }}">Click to Register!</a></p>
+      <p>
+        Forgot Your Password?
+        <a href="{{ url_for('auth.reset_password_request') }}">Click to Reset It</a>
+      </p>
+    </div>
+  </div>
+{% endblock %}

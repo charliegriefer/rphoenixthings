@@ -1,0 +1,11 @@
+<p>Hey {{ user.email }}!</p>
+
+<p>
+  To complete your registration, please <a href="{{ url_for("auth.confirm_register", token=token, _external=True) }}">click here</a>.
+</p>
+
+<p>Alternatively, you can paste the following link in your browser's address bar:</p>
+<p>{{ url_for("auth.confirm_register", token=token, _external=True) }}</p>
+
+<p>All the best,</p>
+<p>The Mods</p>

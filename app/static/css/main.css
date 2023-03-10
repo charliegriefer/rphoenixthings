@@ -1,0 +1,62 @@
+html { font-size: 14px; }
+
+a {
+  color: #337ab7;
+  text-decoration: none;
+}
+a:focus, a:hover {
+  color: #23527c;
+  text-decoration: underline;
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+
+/* nav bar */
+/* ---------------------------------------------------------------------------------------- */
+.navbar {
+  border-bottom: 1px solid #D3D3D3;
+}
+
+#nav_login, #nav_logout {
+  color: #000;
+}
+#nav_login:hover, #nav_logout:hover {
+  color: #fff !important;
+  text-decoration: none;
+}
+
+.container hr {
+  padding-bottom: 12px;
+  padding-top: 0;
+  margin-top: 6px;
+}
+.container h1 {
+  margin-top: 1.5rem !important;
+  margin-bottom: 0 !important;
+}
+
+
+/* alerts */
+/* ---------------------------------------------------------------------------------------- */
+.alert ul { margin-bottom: 0px; }
+
+/* colors taken from https://dribbble.com/shots/15137093--Notifications-New-Countly-UI */
+.alert-info {
+  background-color: #DFEBF9;
+  border-color: #AAC6E7;
+}
+.alert-danger {
+  background-color: #FAE8E4;
+  border-color: #EDC5BD;
+}
+.alert-success {
+  background-color: #E5F5E9;
+  border-color: #BEDFC6;
+}
+.alert-warning {
+  background-color: #FEF5E4;
+  border-color: #F2D9AE;
+}
