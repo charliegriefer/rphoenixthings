@@ -9,7 +9,7 @@ from app.main import main_blueprint
 def index():
     if current_user.is_authenticated:
         return redirect(url_for("main.home"))
-    return render_template("auth/login.html")
+    return redirect(url_for("auth.login"))
 
 
 @main_blueprint.route("/home", endpoint="home")
