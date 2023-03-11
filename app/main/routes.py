@@ -1,7 +1,7 @@
-from app.main import main_blueprint
+from flask import redirect, render_template, url_for
 from flask_login import current_user, login_required
-from flask import current_app, flash, make_response, redirect, render_template, request, url_for
-from app.models import User
+
+from app.main import main_blueprint
 
 
 @main_blueprint.route("/")
@@ -9,7 +9,7 @@ from app.models import User
 def index():
     if current_user.is_authenticated:
         return redirect(url_for("main.home"))
-    return render_template("index.html")
+    return render_template("auth/login.html")
 
 
 @main_blueprint.route("/home", endpoint="home")
