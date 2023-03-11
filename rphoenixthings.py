@@ -1,9 +1,9 @@
 from app import create_app, db
 from app.models import User
 
-rphoenixthings = create_app()
+application = create_app()
 
 
-@rphoenixthings.shell_context_processor
+@application.shell_context_processor
 def make_shell_context():
     return {"db": db, "User": User}
