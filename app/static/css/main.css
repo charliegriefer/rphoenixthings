@@ -60,3 +60,10 @@ a:focus, a:hover {
   background-color: #FEF5E4;
   border-color: #F2D9AE;
 }
+
+
+/* popover */
+/* ---------------------------------------------------------------------------------------- */
+div.popover-body ul {
+  padding-left: 16px;
+}

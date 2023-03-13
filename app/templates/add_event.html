@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+  <h1>Add Event</h1>
+  <hr />
+
+  <div class="container ms-0 ps-0">
+    <div class="col w-50">
+      <form method="post">
+        {{ form.csrf_token }}
+
+        {% for field in form %}
+          {% if field.name != "csrf_token" and field.name != "submit" %}
+            <div class="mb-3">
+              {{ field.label(class="form-label") }}
+              {% if field.flags.required %}<span class="text-danger">*</span>{% endif %}
+              {% if field.name == "cost" %}
+                <a tabindex="0" href="" class="float-end pe-1" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="right" data-bs-html="true" data-bs-title="<i class='bi bi-question-circle pe-1'></i> Cost (String)" data-bs-content="<p>The cost of the event (optional).</p><p>Free text field. Examples of valid values are:</p><ul><li>$25</li><li>$25.00</li><li>$25.00+</li><li>$25.00-$75.00</li><li>Free</li></ul>" onclick="return false;"><i class="bi bi-question-circle-fill"></i></a>
+              {% endif %}
+              {% if field.name == "link" %}
+                <a tabindex="0" href="" class="float-end pe-1" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="right" data-bs-html="true" data-bs-title="<i class='bi bi-question-circle pe-1'></i> Link/URL (String)" data-bs-content="<p>A valid link/URL to the event's web site (optional).</p>" onclick="return false;"><i class="bi bi-question-circle-fill"></i></a>
+              {% endif %}
+              {% if field.type == "SelectField" %}
+                {{ field(class="form-select" + (" is-invalid" if field.errors else "")) }}
+              {% else %}
+                {{ field(class="form-control" + (" is-invalid" if field.errors else "")) }}
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        <div class="mb-3 pt-3">
+          {{ form.submit(class="btn btn-primary") }}
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script type="text/javascript">
+    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+  </script>
+{% endblock %}

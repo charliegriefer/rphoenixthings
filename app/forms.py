@@ -1,8 +1,10 @@
 import re
 
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, PasswordField, StringField, SubmitField
-from wtforms.validators import Email, EqualTo, InputRequired, Length, ValidationError
+from wtforms import (
+    BooleanField, DateField, PasswordField, SelectField, StringField, SubmitField, TextAreaField, TimeField, URLField
+)
+from wtforms.validators import Email, EqualTo, InputRequired, Length, Optional, URL, ValidationError
 
 from app.models import User
 
@@ -54,3 +56,15 @@ class ResetPasswordRequestForm(FlaskForm):
                         validators=[InputRequired(), Email(message="Enter a valid e-mail address.")],
                         render_kw={"placeholder": "E-Mail Address"},)
     submit = SubmitField("Submit")
+
+
+class AddEventForm(FlaskForm):
+    category = SelectField("Category:", validators=[InputRequired()])
+    title = StringField("Title:", validators=[InputRequired()])
+    eventDate = DateField("Event Date:", validators=[InputRequired()])
+    eventTime = TimeField("Event Time:", validators=[InputRequired()])
+    location = StringField("Location:", validators=[InputRequired()])
+    cost = StringField("Cost:", validators=[Optional()])
+    link = URLField("Link/URL:", validators=[Optional(), URL()])
+    details = TextAreaField("Details: ", validators=[Optional()])
+    submit = SubmitField("Add Event")
