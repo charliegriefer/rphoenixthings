@@ -1,7 +1,18 @@
-from flask import redirect, render_template, request, url_for
+import os
+
+from flask import current_app, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+
 from app.forms import AddEventForm
 from app.main import main_blueprint
+
+CAL_ID = "2gerrehdo5ooi1b65ivd5m0vkg@group.calendar.google.com"
+SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
 event_categories = [
     {"title": "Home & Garden", "value": "[HOME/GARDEN]", "emoji": "🏠"},
@@ -39,7 +50,6 @@ event_categories = [
     {"title": "Holidays/New Year's Eve", "value": "[HOLIDAYS/NEW YEAR'S EVE]", "emoji": "🎉"},
     {"title": "Holidays/St. Patrick's Day", "value": "[HOLIDAYS/ST PAT'S]", "emoji": "☘️"}
 ]
-
 # {"title": "Other", "value": "[OTHER]": "emoji": "❓"}
 
 
@@ -61,11 +71,67 @@ def home():
 @login_required
 def add_event():
     form = AddEventForm()
+
+    populate_cats(form)
+
+    if request.method == "POST" and form.validate_on_submit():
+        creds = None
+        if os.path.exists(f"{current_app.root_path}/token.json"):
+            creds = Credentials.from_authorized_user_file(f"{current_app.root_path}/token.json", SCOPES)
+
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file(f"{current_app.root_path}/credentials.json", SCOPES)
+                creds = flow.run_local_server(port=0)
+            # Save the credentials for the next run
+            with open(f"{current_app.root_path}token.json", "w") as token:
+                token.write(creds.to_json())
+
+        try:
+            service = build("calendar", "v3", credentials=creds)
+
+            description = ""
+            if form.link.data:
+                description += f"link: {form.link.data}\n"
+            if form.cost.data:
+                description += f"cost: {form.cost.data}\n"
+            if form.details.data:
+                description += f"details: {form.details.data}\n"
+
+            location = ", ".join([form.venueName.data, form.venueAddress.data])
+
+            event_data = {
+                "summary": f"{form.category.data} {form.title.data}",
+                "location": location,
+                "description": description,
+                "start": {
+                    "dateTime": f"{form.eventDate.data}T{form.eventTime.data}-07:00",
+                    "timeZone": "America/Phoenix",
+                },
+                "end": {
+                    "dateTime": f"{form.eventDate.data}T{form.eventTime.data}-07:00",
+                    "timeZone": "America/Phoenix",
+                },
+            }
+
+            service.events().insert(calendarId=CAL_ID, body=event_data).execute()
+
+        except HttpError as error:
+            print(f"An error occurred: {error}")
+
+        else:
+            flash("The event has been added.", "success")
+            return redirect(url_for("main.home"))
+
+    return render_template("add_event.html", form=form)
+
+# --------------------------------------------------------------------------------------------------------------------
+
+
+def populate_cats(form: AddEventForm) -> None:
     cats = sorted(event_categories, key=lambda d: d["title"])
     form.category.choices = [(c.get("value"), f'{c.get("emoji")} {c.get("title")}') for c in cats]
     form.category.choices.append(("[OTHER]", "❓Other"))
     form.category.choices.insert(0, ("", "Choose a Category"))
-    if request.method == "POST" and form.validate_on_submit():
-        print("GOOD JOB!")
-        exit(27)
-    return render_template("add_event.html", form=form)
