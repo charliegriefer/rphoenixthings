@@ -11,7 +11,7 @@ from googleapiclient.errors import HttpError
 from app.forms import AddEventForm
 from app.main import main_blueprint
 
-CAL_ID = "2gerrehdo5ooi1b65ivd5m0vkg@group.calendar.google.com"
+CAL_ID = os.environ["CALENDAR_ID"]
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
 event_categories = [
