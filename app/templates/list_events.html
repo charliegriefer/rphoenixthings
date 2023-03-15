@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+  <h1>Get Things to Do Post</h1>
+  <hr />
+
+  <div class="container ms-0 ps-0">
+    <div class="col w-50">
+      <form method="post">
+        {{ form.csrf_token }}
+
+        <div class="mb-3">
+          {{ form.start_date.label(class="form-label") }}
+          <span class="text-danger">*</span>
+          {{ form.start_date(class="form-control" + (" is-invalid" if form.start_date.errors else "")) }}
+        </div>
+
+        <div class="mb-3 pt-3">
+          {{ form.submit(class="btn btn-primary") }}
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+{% endblock %}

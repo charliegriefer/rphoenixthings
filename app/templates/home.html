@@ -5,6 +5,9 @@
   <hr />
 
   <div class="container ms-0 ps-0">
-    <a href="{{ url_for("main.add_event") }}">Add Event</a>
+    <p>You can access the Google Calendar directly <a href="https://calendar.google.com/calendar/embed?src=2gerrehdo5ooi1b65ivd5m0vkg%40group.calendar.google.com&ctz=America%2FPhoenix">here</a>.</p>
+    <a href="{{ url_for("main.add_event") }}">Add Event</a>: Add an Event to the Calendar
+    <br />
+    <a href="{{ url_for("main.list_events") }}">List Events</a>: Create the "Things to Do" post for a given week.
   </div>
 {% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+  <h1>Things to Do Post</h1>
+  <hr />
+
+  <div class="container ms-0 ps-0">
+    <div class="col w-100">
+      <div><p>{{ start_date.strftime("%B %d") }} - {{ end_date.strftime("%B %d") }}</p></div>
+      <div>
+        <b>TITLE</b>: Things to Do This Week in Phoenix ({{ start_date.strftime("%B %d") }} - {{ end_date.strftime("%B %d") }})
+      </div>
+      <label>
+        <textarea cols="120" rows="30" onclick="this.focus();this.select()" readonly="readonly">{{ events_text }}</textarea>
+      </label>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+{% endblock %}

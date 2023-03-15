@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 
 from flask_wtf import FlaskForm
 from wtforms import (
@@ -69,3 +70,8 @@ class AddEventForm(FlaskForm):
     link = URLField("Link/URL:", validators=[Optional(), URL()])
     details = TextAreaField("Details: ", validators=[Optional()])
     submit = SubmitField("Add Event")
+
+
+class ListEventsForm(FlaskForm):
+    start_date = DateField("Start Date:", validators=[InputRequired()], default=datetime.today)
+    submit = SubmitField("List Events")
